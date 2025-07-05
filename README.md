@@ -1,5 +1,22 @@
 # xraymonitor
-This is the first stable release of the Xray Automatic Monitoring script. It continuously checks the server's outbound connection status using a test Xray config. If a disconnection occurs, it executes your custom commands to automatically recover the connection.
+ این اسکریپت به طور مداوم وضعیت اتصال خروجی سرور را از طریق یک کانفیگ تست Xray بررسی کرده و در صورت بروز قطعی، دستورات سفارشی شما را برای بازیابی خودکار اجرا می‌کند.
+
+ویژگی‌های کلیدی:
+
+مانیتورینگ خودکار و دوره‌ای اتصال به اینترنت.
+
+اجرای دستور سفارشی کاربر در صورت بروز خطا (مانند ری‌استارت یک سرویس خاص).
+
+قابلیت ریبوت خودکار سرور پس از تعداد مشخصی خطای متوالی.
+
+ارسال نوتیفیکیشن از طریق ربات تلگرام (برای سرورهای خارج از ایران).
+
+منوی مدیریتی ساده و کاربرپسند تحت ترمینال (TUI) برای نصب، حذف و مدیریت.
+
+داشبورد نمایش وضعیت شامل سلامت سرویس، وضعیت آخرین اجرا و زمان باقی‌مانده تا اجرای بعدی.
+
+بررسی خودکار پیش‌نیازها قبل از نصب برای جلوگیری از بروز خطا.
+It continuously checks the server's outbound connection status using a test Xray config. If a disconnection occurs, it executes your custom commands to automatically recover the connection.
 
 Key Features
 Automatic, periodic monitoring of the internet connection.
@@ -16,9 +33,6 @@ Status dashboard showing service health, last run status, and time until the nex
 
 Automatically checks for dependencies before installation.
 
-How to Use
-Download the script and run it with root access: sudo bash ./script_name.sh
+Quick Start
+bash <(curl -Ls https://install.sh)
 
-From the menu, choose the Install Monitoring option.
-
-Enter your preferred settings, especially the custom command (LOCAL_COMMAND).
