@@ -1,7 +1,7 @@
 # xraymonitor
  این اسکریپت به طور مداوم وضعیت اتصال خروجی سرور را از طریق یک کانفیگ تست Xray بررسی کرده و در صورت بروز قطعی، دستورات سفارشی شما را برای بازیابی خودکار اجرا می‌کند.
 
-ویژگی‌های کلیدی:
+## ویژگی های کلیدی
 
 مانیتورینگ خودکار و دوره‌ای اتصال به اینترنت.
 
@@ -19,7 +19,8 @@
 
 It continuously checks the server's outbound connection status using a test Xray config. If a disconnection occurs, it executes your custom commands to automatically recover the connection.
 
-Key Features
+## Key Features
+
 Automatic, periodic monitoring of the internet connection.
 
 Executes a user-defined custom command on failure (e.g., restarting a service).
