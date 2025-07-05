@@ -3,21 +3,25 @@
 
 بعنوان مثال میتونید در کنار تانل های ریورس مثل Waterwall که هرازچندگاهی کانکشن مختل میشه استفاده کنید تا سرویس Waterwall رو مانیتور کنید تا دستور ریستارت تانل بصورت اتوماتیک اجرا بشه.
 
+
 ## ویژگی های کلیدی
 
-مانیتورینگ خودکار و دوره‌ای اتصال به اینترنت.
 
-اجرای دستور سفارشی کاربر در صورت بروز خطا (مانند ری‌استارت یک سرویس خاص).
+:green_circle: مانیتورینگ خودکار و دوره‌ای اتصال به اینترنت <br>
 
-قابلیت ریبوت خودکار سرور پس از تعداد مشخصی خطای متوالی.
+:green_circle: اجرای دستور سفارشی کاربر در صورت بروز خطا مانند ری‌استارت یک سرویس خاص <br>
 
-ارسال نوتیفیکیشن از طریق ربات تلگرام (برای سرورهای خارج از ایران).
+:green_circle: قابلیت ریبوت خودکار سرور پس از تعداد مشخصی خطای متوالی <br>
 
-منوی مدیریتی ساده و کاربرپسند تحت ترمینال (TUI) برای نصب، حذف و مدیریت.
+:green_circle: ارسال نوتیفیکیشن از طریق ربات تلگرام (برای سرورهای خارج از ایران) <br>
 
-داشبورد نمایش وضعیت شامل سلامت سرویس، وضعیت آخرین اجرا و زمان باقی‌مانده تا اجرای بعدی.
+:green_circle: منوی مدیریتی ساده و کاربرپسند تحت ترمینال (TUI) برای نصب، حذف و مدیریت <br>
 
-بررسی خودکار پیش‌نیازها قبل از نصب برای جلوگیری از بروز خطا.
+:green_circle: داشبورد نمایش وضعیت شامل سلامت سرویس، وضعیت آخرین اجرا و زمان باقی‌مانده تا اجرای بعدی <br>
+
+:green_circle: بررسی خودکار پیش‌نیازها قبل از نصب برای جلوگیری از بروز خطا <br>
+
+
 
 
 
@@ -27,19 +31,19 @@ It continuously checks the server's outbound connection status using a test Xray
 
 ## Key Features
 
-Automatic, periodic monitoring of the internet connection.
+* Automatic, periodic monitoring of the internet connection.
 
-Executes a user-defined custom command on failure (e.g., restarting a service).
+* Executes a user-defined custom command on failure (e.g., restarting a service).
 
-Option to automatically reboot the server after a set number of consecutive failures.
+* Option to automatically reboot the server after a set number of consecutive failures.
 
-Sends notifications via a Telegram bot (for non-Iran servers).
+* Sends notifications via a Telegram bot (for non-Iran servers).
 
-Simple, terminal-based user interface (TUI) for easy installation, uninstallation, and management.
+* Simple, terminal-based user interface (TUI) for easy installation, uninstallation, and management.
 
-Status dashboard showing service health, last run status, and time until the next check.
+* Status dashboard showing service health, last run status, and time until the next check.
 
-Automatically checks for dependencies before installation.
+* Automatically checks for dependencies before installation.
 
 ## Quick Start
 
