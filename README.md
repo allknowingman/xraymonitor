@@ -50,6 +50,6 @@ bash <(curl -Ls https://raw.githubusercontent.com/allknowingman/xraymonitor/main
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./media/menu screenshot.png">
-    <img alt="3x-ui" src="./media/3x-ui-light.png">
+    <img alt="xraymonitor" src="./media/menu screenshot.png.png">
   </picture>
 </p>
