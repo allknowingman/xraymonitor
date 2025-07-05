@@ -49,7 +49,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/allknowingman/xraymonitor/main
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./media/menu screenshot.png">
-    <img alt="xraymonitor" src="./media/menu screenshot.png.png">
+    <source media="(prefers-color-scheme: dark)" srcset="./media/menu%20screenshot.png">
+    <img alt="xraymonitor" src="./media/menu%20screenshot.png.png">
   </picture>
 </p>
