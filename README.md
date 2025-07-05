@@ -37,5 +37,5 @@ Automatically checks for dependencies before installation.
 ## Quick Start
 
 ```bash
-bash <(curl -Ls https://github.com/allknowingman/xraymonitor/blob/main/xray-monitor.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/allknowingman/xraymonitor/main/xray-monitor.sh)
 ```
