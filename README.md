@@ -34,5 +34,5 @@ Status dashboard showing service health, last run status, and time until the nex
 Automatically checks for dependencies before installation.
 
 Quick Start
-bash <(curl -Ls https://install.sh)
+bash <(curl -Ls [https://install.sh](https://github.com/allknowingman/xraymonitor/blob/main/xray-monitor.sh)
 
