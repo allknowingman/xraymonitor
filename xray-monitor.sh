@@ -72,8 +72,8 @@ collect_user_inputs() {
     local d_enable_tg="$5"; local d_fail_tg_action="$6"; local d_tg_token="$7"; local d_tg_chat="$8";
     local d_local_command="$9"
 
-    MAX_FAILURES_FOR_REBOOT_INJECT=99999
-    MAX_FAILURES_FOR_TELEGRAM_INJECT=99999
+    MAX_FAILURES_FOR_REBOOT_INJECT=20
+    MAX_FAILURES_FOR_TELEGRAM_INJECT=5
 
     echo "--- Collecting Configuration Inputs ---" && echo ""
     if [ ! -f "$(dirname "$XRAY_BIN_PATH")/${XRAY_TEST_CONF_PATH}" ]; then
