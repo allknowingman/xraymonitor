@@ -90,7 +90,7 @@ collect_user_inputs() {
     done && echo ""
 
     echo "Enter the command to run on failure."
-    read -p "(e.g., killall -q Waterwall; sleep 3; tmux new-session -d -s waterwall 'cd /root/Waterwall && ./Waterwall'): " cmd_input
+    read -p "(e.g., sudo systemctl restart waterwall.service): " cmd_input
     LOCAL_COMMAND="${cmd_input:-${d_local_command:-# No command set}}"
     echo ""
 
