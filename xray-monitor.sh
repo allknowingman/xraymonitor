@@ -306,7 +306,7 @@ restart_monitor() {
 }
 run_monitor_once() {
     if [ ! -f "$MONITOR_SCRIPT_PATH" ]; then
-        echo -e "${COLOR_RED}Error: Monitoring script not found.${COLOR_NC}"; return 1;
+        echo -e "${COLOR_RED}Error: Monitoring script not found.${NC}"; return 1;
     fi
     if systemctl is-active --quiet "$TIMER_NAME"; then
         echo -e "${COLOR_RED}Error: The monitoring timer is currently active.${NC}"
@@ -317,6 +317,7 @@ run_monitor_once() {
     bash "$MONITOR_SCRIPT_PATH"
     echo "Manual run finished. Check logs for details."
 }
+
 
 run_debug_test() {
     if systemctl is-active --quiet "$TIMER_NAME"; then
