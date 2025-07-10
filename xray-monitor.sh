@@ -310,7 +310,7 @@ run_monitor_once() {
     fi
     if systemctl is-active --quiet "$TIMER_NAME"; then
         echo -e "${COLOR_RED}Error: The monitoring timer is currently active.${NC}"
-        echo "${COLOR_YELLOW}Please stop the monitor (Option 5) before running a test.${NC}"
+        echo -e "${COLOR_YELLOW}Please stop the monitor (Option 5) before running a test.${NC}"
         return 1
     fi
     echo "Running Xray monitoring script once..."
@@ -321,7 +321,7 @@ run_monitor_once() {
 run_debug_test() {
     if systemctl is-active --quiet "$TIMER_NAME"; then
         echo -e "${COLOR_RED}Error: The monitoring timer is currently active.${NC}"
-        echo "${COLOR_YELLOW}Please stop the monitor (Option 5) before running a test.${NC}"
+        echo -e "${COLOR_YELLOW}Please stop the monitor (Option 5) before running a test.${NC}"
         return 1
     fi
     echo -e "${COLOR_YELLOW}--- Starting Verbose Debug Test ---${NC}"
