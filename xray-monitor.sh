@@ -90,7 +90,7 @@ collect_user_inputs() {
     done && echo ""
 
     echo "Enter the command to run on failure."
-    read -p "(e.g., sudo systemctl restart waterwall.service): " cmd_input
+    read -p "(e.g., killall -q Waterwall; sleep 3; tmux new-session -d -s waterwall 'cd /root/Waterwall && ./Waterwall'): " cmd_input
     LOCAL_COMMAND="${cmd_input:-${d_local_command:-# No command set}}"
     echo ""
 
@@ -214,8 +214,6 @@ if [ -z "\$IP_RESULT" ] || [ "\$CURL_EXIT_CODE" -ne 0 ]; then
     CURRENT_FAIL_COUNT=\$((CURRENT_FAIL_COUNT + 1)); echo "\$CURRENT_FAIL_COUNT" > "\$FAIL_COUNT_FILE"
     log_message "Fail count incremented to: \$CURRENT_FAIL_COUNT"
     if [ -x "\$LOCAL_COMMAND_SCRIPT_PATH" ]; then
-        # Use 'su -l' to create a full login shell for root.
-        # This ensures the command runs with the exact same environment as the user.
         su -l root -c "\$LOCAL_COMMAND_SCRIPT_PATH" &> /dev/null
     fi
     if [ "\$CURRENT_FAIL_COUNT" -ge "\$MAX_FAILURES_FOR_TELEGRAM" ] && [ "\$((CURRENT_FAIL_COUNT % MAX_FAILURES_FOR_TELEGRAM))" -eq 0 ]; then
@@ -308,12 +306,62 @@ restart_monitor() {
 }
 run_monitor_once() {
     if [ ! -f "$MONITOR_SCRIPT_PATH" ]; then
-        echo -e "${COLOR_RED}Error: Monitoring script not found.${COLOR_NC}"; return;
+        echo -e "${COLOR_RED}Error: Monitoring script not found.${COLOR_NC}"; return 1;
+    fi
+    if systemctl is-active --quiet "$TIMER_NAME"; then
+        echo -e "${COLOR_RED}Error: The monitoring timer is currently active.${NC}"
+        echo "Please stop the monitor (Option 5) before running a test."
+        return 1
     fi
     echo "Running Xray monitoring script once..."
     bash "$MONITOR_SCRIPT_PATH"
-    echo "Manual run finished. (Logs File: /var/log/xray_monitor.log) "
+    echo "Manual run finished. Check logs for details."
 }
+
+run_debug_test() {
+    if systemctl is-active --quiet "$TIMER_NAME"; then
+        echo -e "${COLOR_RED}Error: The monitoring timer is currently active.${NC}"
+        echo "Please stop the monitor (Option 5) before running a test."
+        return 1
+    fi
+    echo -e "${COLOR_YELLOW}--- Starting Verbose Debug Test ---${NC}"
+    echo "This will run Xray and curl to show all output for debugging."
+    echo "Any errors from xray loading the config will be visible."
+    echo "--------------------------------------------------"
+
+    pushd "$(dirname "$XRAY_BIN_PATH")" > /dev/null
+
+    "$XRAY_BIN_PATH" run -c "$XRAY_TEST_CONF_PATH" &
+    XRAY_PID=$!
+    echo -e "${COLOR_CYAN}Xray process started in background with PID: ${XRAY_PID}${NC}"
+
+    echo "Waiting 5 seconds for Xray to initialize..."
+    sleep 5
+
+    echo -e "\n${COLOR_YELLOW}--- Running Curl Test ---${NC}"
+    local curl_output
+    curl_output=$(curl -s --proxy "socks5h://127.0.0.1:$SOCKS_PROXY_PORT" --max-time 15 "$IP_CHECK_URL_GLOBAL")
+    local curl_exit_code=$?
+    
+    if [ $curl_exit_code -eq 0 ]; then
+        echo -e "Success! Received Response: ${COLOR_BLUE}${curl_output}${NC}"
+    elif [ $curl_exit_code -eq 28 ]; then
+        echo -e "${COLOR_RED}Error: Operation Timed Out after 15 seconds.${NC}"
+    else
+        echo -e "${COLOR_RED}Error: Curl failed with exit code ${curl_exit_code}.${NC}"
+    fi
+
+    echo -e "\n${COLOR_YELLOW}--- Curl Test Finished ---${NC}"
+
+    echo -e "\n${COLOR_YELLOW}--- Stopping Xray Process (PID: ${XRAY_PID}) ---${NC}"
+    kill -9 "$XRAY_PID" &> /dev/null
+    wait "$XRAY_PID" 2>/dev/null
+    echo "Xray process stopped."
+
+    popd > /dev/null
+    echo -e "${COLOR_YELLOW}--- Debug Test Complete ---${NC}"
+}
+
 
 # --- UI Functions ---
 display_banner_and_menu() {
@@ -363,15 +411,15 @@ display_banner_and_menu() {
     
     local BORDER_LINE="${COLOR_CYAN}===================================================================${NC}"
     echo -e "$BORDER_LINE"
-    echo -e "${COLOR_CYAN}#                Xray Monitoring Dashboard  v1.0.0                #${NC}"
+    echo -e "${COLOR_CYAN}#                    Xray Monitoring Dashboard                    #${NC}"
     echo -e "$BORDER_LINE"
-    printf "  ${COLOR_GREEN}%-20s: %b\n" "Status" "${NC}${color_timer_status}${timer_status}${NC}"
-    printf "  %-20s: %b\n" "Next Run In" "${COLOR_GREEN}${next_run_left:-N/A}${NC}"
-    printf "  %-20s: %b\n" "Last Run Status" "${color_last_run}${last_run_status}${NC}"
-    printf "  %-20s: %b\n" "Health (24h)" "${COLOR_GREEN}${health_24h:-N/A}${NC}"
-    printf "  %-20s: %b\n" "Total Runs (24h)" "${COLOR_GREEN}${runs_24h}${NC}"
-    printf "  %-20s: %b\n" "Consecutive Fails" "${COLOR_RED}${fail_count}${NC}"
-    echo -e "${COLOR_BLUE}-------------------------------------------------------------------${NC}"
+    printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Status" "${color_timer_status}${timer_status}${NC}"
+    printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Next Run In" "${COLOR_YELLOW}${next_run_left:-N/A}${NC}"
+    printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Last Run Status" "${color_last_run}${last_run_status}${NC}"
+    printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Health (24h)" "${COLOR_GREEN}${health_24h:-N/A}${NC}"
+    printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Total Runs (24h)" "${COLOR_YELLOW}${runs_24h}${NC}"
+    printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Consecutive Fails" "${COLOR_RED}${fail_count}${NC}"
+    echo -e "${COLOR_CYAN}-------------------------------------------------------------------${NC}"
     echo -e "  ${COLOR_YELLOW}>>>>>${NC} ${CYAN}test.json${NC} must be in ${CYAN}$(dirname "$XRAY_BIN_PATH")/${NC}"
     echo -e "  >>>>> SOCKS test port is ${CYAN}${SOCKS_PROXY_PORT}${NC}. Ensure it's in your test.json"
     echo -e "$BORDER_LINE"
@@ -382,8 +430,9 @@ display_banner_and_menu() {
     echo "4) Start"
     echo "5) Stop"
     echo "6) Restart"
-    echo "7) Test Now"
-    echo "8) Exit"
+    echo "7) Test : Monitoring"
+    echo "8) Test : Xray Log + IP Test"
+    echo "9) Exit"
     echo "------------------------------------"
 }
 
@@ -409,7 +458,7 @@ TELEGRAM_EOF
     fi
     while true; do
         display_banner_and_menu
-        read -p "Enter your choice (1-8): " CHOICE; clear
+        read -p "Enter your choice (1-9): " CHOICE; clear
         case "$CHOICE" in
             1) install_monitor ;;
             2) modify_monitor ;;
@@ -418,10 +467,11 @@ TELEGRAM_EOF
             5) stop_monitor ;;
             6) restart_monitor ;;
             7) run_monitor_once ;;
-            8) echo "Exiting script."; exit 0 ;;
+            8) run_debug_test ;;
+            9) echo "Exiting script."; exit 0 ;;
             *) echo -e "${COLOR_RED}Invalid choice.${COLOR_NC}"; sleep 2 ;;
         esac
-        if [[ "$CHOICE" =~ ^[1-7]$ ]]; then echo ""; read -p "Press Enter to return to main menu..."; fi
+        if [[ "$CHOICE" =~ ^[1-8]$ ]]; then echo ""; read -p "Press Enter to return to main menu..."; fi
     done
 }
 
