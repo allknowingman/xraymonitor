@@ -330,6 +330,7 @@ run_debug_test() {
     echo "Any errors from xray loading the config will be visible."
     echo "--------------------------------------------------"
 
+
     pushd "$(dirname "$XRAY_BIN_PATH")" > /dev/null
 
     "$XRAY_BIN_PATH" run -c "$XRAY_TEST_CONF_PATH" &
