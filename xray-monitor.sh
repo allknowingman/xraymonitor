@@ -409,9 +409,9 @@ display_banner_and_menu() {
         fi
     fi
     
-    local BORDER_LINE="${COLOR_CYAN}===================================================================${NC}"
+    local BORDER_LINE="${COLOR_CYAN}=============================================================${NC}"
     echo -e "$BORDER_LINE"
-    echo -e "${COLOR_CYAN}#                    Xray Monitoring Dashboard                    #${NC}"
+    echo -e "${COLOR_CYAN}#                 Xray Monitoring Dashboard                 #${NC}"
     echo -e "$BORDER_LINE"
     printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Status" "${color_timer_status}${timer_status}${NC}"
     printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Next Run In" "${COLOR_YELLOW}${next_run_left:-N/A}${NC}"
@@ -419,9 +419,9 @@ display_banner_and_menu() {
     printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Health (24h)" "${COLOR_GREEN}${health_24h:-N/A}${NC}"
     printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Total Runs (24h)" "${COLOR_YELLOW}${runs_24h}${NC}"
     printf "  ${COLOR_GREEN}%-20s${NC}: %b\n" "Consecutive Fails" "${COLOR_RED}${fail_count}${NC}"
-    echo -e "${COLOR_CYAN}-------------------------------------------------------------------${NC}"
-    echo -e "  ${COLOR_YELLOW}>>>>>${NC} ${CYAN}test.json${NC} must be in ${CYAN}$(dirname "$XRAY_BIN_PATH")/${NC}"
-    echo -e "  >>>>> SOCKS test port is ${CYAN}${SOCKS_PROXY_PORT}${NC}. Ensure it's in your test.json"
+    echo -e "${COLOR_CYAN}-------------------------------------------------------------${NC}"
+    echo -e "  ${COLOR_YELLOW}>>>${NC} ${CYAN}test.json${NC} must be in ${CYAN}$(dirname "$XRAY_BIN_PATH")/${NC}"
+    echo -e "  >>> SOCKS test port is ${CYAN}${SOCKS_PROXY_PORT}${NC}. Ensure it's in your test.json"
     echo -e "$BORDER_LINE"
     echo ""
     echo "1) Install"
