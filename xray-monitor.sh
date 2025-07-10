@@ -126,7 +126,7 @@ collect_user_inputs() {
             case "$final_choice" in 1) ENABLE_TELEGRAM_NOTIFICATION="true"; break;; 2) ENABLE_TELEGRAM_NOTIFICATION="false"; break;; *) echo -e "${COLOR_RED}Invalid input.${COLOR_NC}";; esac
         done && echo ""
         if [ "$ENABLE_TELEGRAM_NOTIFICATION" == "true" ]; then
-            while true; do read -p "Failures before sending Telegram (default: ${d_fail_tg_action:-3}): " input_value_temp
+            while true; do read -p "Failures count before sending Telegram notification (default: ${d_fail_tg_action:-3}): " input_value_temp
                 MAX_FAILURES_FOR_TELEGRAM_INJECT="${input_value_temp:-${d_fail_tg_action:-3}}"
                 if [[ "$MAX_FAILURES_FOR_TELEGRAM_INJECT" =~ ^[1-9][0-9]*$ ]]; then break; else echo -e "${COLOR_RED}Invalid input.${COLOR_NC}"; fi
             done && echo ""
